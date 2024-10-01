@@ -1,3 +1,6 @@
+//turn nav-links.tsx into a Client Component. Add React's "use client"
+'use client';
+
 import {
   UserGroupIcon,
   HomeIcon,
@@ -5,6 +8,8 @@ import {
 } from '@heroicons/react/24/outline';
 // Map of links to display in the side navigation.
 import Link from 'next/link'; // imported Link component
+import { usePathname } from 'next/navigation';
+import clsx from 'clsx';
 
 // Depending on the size of the application, this would be stored in a database.
 const links = [
@@ -18,6 +23,8 @@ const links = [
 ];
 
 export default function NavLinks() {
+  //Next, assign the path to a variable called pathname inside your <NavLinks /> component
+  const pathname = usePathname();
   return (
     <>
       {links.map((link) => {
@@ -26,7 +33,13 @@ export default function NavLinks() {
           <Link
             key={link.name}
             href={link.href}
-            className="flex h-[48px] grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3"
+            //added to highlight links
+            className={clsx(
+              'flex h-[48px] grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3',
+              {
+                'bg-sky-100 text-blue-600': pathname === link.href,
+              },
+            )}
           >
             <LinkIcon className="w-6" />
             <p className="hidden md:block">{link.name}</p>
